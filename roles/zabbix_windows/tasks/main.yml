@@ -1,0 +1,19 @@
+- name: Criar diretoŕio C:\tivitzbx
+  win_shell: mkdir C:\tivitzbx
+  ignore_errors: true
+
+
+- name: Copia de arquivos
+  win_copy:
+    src: zabbix_agent-5.0.14-windows-amd64-openssl.msi
+    dest: C:\tivitzbx\zabbix_agent-5.0.14-windows-amd64-openssl.msi
+  ignore_errors: true
+
+
+- name: Remove pacote existente
+  win_shell: msiexec.exe /x C:\tivitzbx\zabbix_agent-5.0.14-windows-amd64-openssl.msi /qn /norestart
+  ignore_errors: true
+
+
+- name: Instalando agente Zabbix
+  win_shell: msiexec.exe /i C:\tivitzbx\zabbix_agent-5.0.14-windows-amd64-openssl.msi server=192.168.15.104  AllowKey=system.run[*] HostMetadataItem=system.uname sport=10050 lport=10051 HostnameItem=system.hostname ServerActive=192.168.15.104 /qn /norestart /l*v  c:\temp\install_log.txt
